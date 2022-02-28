@@ -117,6 +117,7 @@ MonoBehaviour:
   status: 0
   source: {fileID: 7536674856021400640}
   active: {fileID: 0}
+  idleSound: {fileID: 8300000, guid: a26dc2fecc633bc40ac053a516733cf7, type: 3}
   walkSound: {fileID: 8300000, guid: 78746b03d88cd504ca19e96f702e8d1c, type: 3}
   runSound: {fileID: 8300000, guid: 474d60babc4100247b3267fdb42584fd, type: 3}
   attackSound: {fileID: 8300000, guid: 8f4e27c1e2035044bb5e63bfaed8aae0, type: 3}

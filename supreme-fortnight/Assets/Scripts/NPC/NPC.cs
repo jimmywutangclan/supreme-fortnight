@@ -23,6 +23,7 @@ public class NPC : MonoBehaviour
     public AudioSource source;
     public AudioClip active;
 
+    public AudioClip idleSound;
     public AudioClip walkSound;
     public AudioClip runSound;
     public AudioClip attackSound;
@@ -49,10 +50,13 @@ public class NPC : MonoBehaviour
         anim = model.GetComponent<Animator>();
 
         // init the patrol state
-        StartPatrol();
+        if (checkpointCount == 1) {
+            StartIdle();
+        }
+        else {
+            StartPatrol();
+        }
         dir = 1;
-
-        navMeshAgent.destination = objectOfTransforms.GetChild(currCheckpoint).position;
     }
 
     // Update is called once per frame
@@ -66,6 +70,9 @@ public class NPC : MonoBehaviour
 
         switch (status)
         {
+            case EnemyState.Idle:
+                OnIdle();
+                break;
             case EnemyState.Patrol:
                 OnPatrol();
                 break;
@@ -78,6 +85,14 @@ public class NPC : MonoBehaviour
             case EnemyState.Death:
                 OnDie();
                 break;
+        }
+    }
+
+    void OnIdle() {
+        // if enemy sees player, chase mode activated
+        if (PlayerInFOV()) {
+            ExitIdle();
+            StartChase();
         }
     }
 
@@ -101,10 +116,15 @@ public class NPC : MonoBehaviour
         Vector3 currGoal = GameObject.FindGameObjectWithTag("Player").transform.position;
         navMeshAgent.destination = currGoal;
 
-        // if player falls out of FOV, go back to patrol duty
+        // if player falls out of FOV, go back to patrol/idle duty
         if (!PlayerInFOV()) {
             ExitChase();
-            StartPatrol();
+            if (checkpointCount == 0) {
+                StartIdle();
+            }
+            else {
+                StartPatrol();
+            }
         }
 
         // if player gets within the capture range, enter Attack
@@ -132,6 +152,18 @@ public class NPC : MonoBehaviour
 
     // transition functions here:
 
+    void StartIdle() {
+        status = EnemyState.Idle;
+        anim.SetBool("Idle", true);
+        active = idleSound;
+
+        timeSinceAudioClip = 0;
+        source.PlayOneShot(active);
+    }
+
+    void ExitIdle() {
+        anim.SetBool("Idle", false);
+    }
 
     void StartPatrol() {
         status = EnemyState.Patrol;
