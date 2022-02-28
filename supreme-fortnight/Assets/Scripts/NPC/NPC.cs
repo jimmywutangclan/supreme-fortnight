@@ -25,6 +25,7 @@ public class NPC : MonoBehaviour
 
     public AudioClip walkSound;
     public AudioClip runSound;
+    public AudioClip attackSound;
     public float timeSinceAudioClip;
     
     public GameObject model;
@@ -34,6 +35,8 @@ public class NPC : MonoBehaviour
 
     public float sightRadius;
     public float sightAngle;
+
+    public float captureDist;
     
 
     // Start is called before the first frame update
@@ -69,6 +72,9 @@ public class NPC : MonoBehaviour
             case EnemyState.Chase:
                 OnChase();
                 break;
+            case EnemyState.Attack:
+                OnAttack();
+                break;
             case EnemyState.Death:
                 OnDie();
                 break;
@@ -99,6 +105,24 @@ public class NPC : MonoBehaviour
         if (!PlayerInFOV()) {
             ExitChase();
             StartPatrol();
+        }
+
+        // if player gets within the capture range, enter Attack
+        if (Vector3.Distance(transform.position, currGoal) <= captureDist) {
+            ExitChase();
+            StartAttack();
+        }
+    }
+
+    void OnAttack() {
+        Vector3 currGoal = GameObject.FindGameObjectWithTag("Player").transform.position;
+        navMeshAgent.destination = currGoal;
+        FaceTarget(currGoal);
+
+        // if player leaves capture range, go back to Chase
+        if (Vector3.Distance(transform.position, currGoal) > captureDist) {
+            ExitAttack();
+            StartChase();
         }
     }
 
@@ -137,6 +161,19 @@ public class NPC : MonoBehaviour
 
     void ExitChase() {
         anim.SetBool("Chase", false);
+    }
+
+    void StartAttack() {
+        status = EnemyState.Attack;
+        anim.SetBool("Capture", true);
+        active = attackSound;
+
+        timeSinceAudioClip = 0;
+        source.PlayOneShot(active);
+    }
+
+    void ExitAttack() {
+        anim.SetBool("Capture", false);
     }
 
     // We are entering helper function territory here, spaghetti code galore
