@@ -28,6 +28,15 @@ public class FPSController : MonoBehaviour
         input = Input.GetAxis("Horizontal") * transform.right
                 + Input.GetAxis("Vertical") * transform.forward;
 
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            groundSpeed *= 2;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            groundSpeed /= 2;
+        }
+
         if (charCtrl.isGrounded)
         {
             yVel = 0;

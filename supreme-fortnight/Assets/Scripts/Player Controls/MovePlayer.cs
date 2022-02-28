@@ -26,6 +26,8 @@ public class MovePlayer : MonoBehaviour
 
         input = Vector3.ClampMagnitude(transform.right * moveHorizontal +  transform.forward * moveVertical, 1f);
 
+     
+
         input *= speed;
 
         if (control.isGrounded) {
@@ -34,7 +36,9 @@ public class MovePlayer : MonoBehaviour
             if (Input.GetButton("Jump")) {
                 moveDirection.y = Mathf.Sqrt(2 * jumpHeight * gravity);
             }
-            else {
+
+            else
+            {
                 moveDirection.y = 0.0f;
             }
         }
