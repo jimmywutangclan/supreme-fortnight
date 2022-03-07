@@ -17,11 +17,11 @@ public class Ethereal : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.E))
         {
-            m_collider.enabled = false;
+            m_collider.isTrigger = true;
         }
         if(Input.GetKeyUp(KeyCode.E))
         {
-            m_collider.enabled = true;
+            m_collider.isTrigger = false;
         }
         
     }
