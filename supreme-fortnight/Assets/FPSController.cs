@@ -6,6 +6,7 @@ using UnityEngine;
 public class FPSController : MonoBehaviour
 {
     CharacterController charCtrl;
+  
 
     [SerializeField] float groundSpeed = 5f;
     [SerializeField] float airSpeed = 5f;
@@ -19,6 +20,7 @@ public class FPSController : MonoBehaviour
     void Start()
     {
         charCtrl = GetComponent<CharacterController>();
+        charCtrl.enabled = true;
 
         yAccel = -gravity;
     }
