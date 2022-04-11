@@ -33,7 +33,7 @@ public class Teleportation : MonoBehaviour
 
         //if the puck is thrown teleport the player to the pucks location and delete puck
         else if (Input.GetKeyDown(KeyCode.R) && isPuckThrown)
-        {         
+        {
             controller.enabled = false;
             transform.position = projectile.transform.position;
             Destroy(projectile);
@@ -60,5 +60,7 @@ public class Teleportation : MonoBehaviour
 
 
     }
+
+   
 }
 
