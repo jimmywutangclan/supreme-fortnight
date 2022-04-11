@@ -224,6 +224,8 @@ MonoBehaviour:
   sightAngle: 45
   captureDist: 2
   idleDirection: {x: 0, y: 0, z: 0}
+  timeSinceAttacking: 0
+  attackCaptureTime: 0.25
 --- !u!195 &7536674856021400646
 NavMeshAgent:
   m_ObjectHideFlags: 0

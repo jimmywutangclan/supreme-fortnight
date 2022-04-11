@@ -11,11 +11,24 @@ public class FPSController : MonoBehaviour
     [SerializeField] float groundSpeed = 5f;
     [SerializeField] float airSpeed = 5f;
     [SerializeField] float jumpHeight = 3f;
+    [SerializeField] float runFactor = 1.65f;
+    [SerializeField] float etherealRechargeFactor = 0.10f;
+    [SerializeField] float etherealDecayRate = 0.30f;
+    public float etherealExpirationBuffer = -0.1f;
+    public float etherealCooldownTime = 0.5f;
+
+    [SerializeField] float maxEtherealTime = 8f;
+    public float currentEtherealTime;
+    
+    public GameObject spawnPoint;
 
     Vector3 input, moveDirection;
     float gravity = Physics.gravity.magnitude;
     float yAccel;
     float yVel;
+
+    public GameObject etherealTimer;
+    public GameObject etherealActiveOrNot;
 
     void Start()
     {
@@ -23,6 +36,7 @@ public class FPSController : MonoBehaviour
         charCtrl.enabled = true;
 
         yAccel = -gravity;
+        currentEtherealTime = maxEtherealTime;
     }
 
     void Update()
@@ -30,13 +44,26 @@ public class FPSController : MonoBehaviour
         input = Input.GetAxis("Horizontal") * transform.right
                 + Input.GetAxis("Vertical") * transform.forward;
 
+        bool etherealActive = true;
+        // managing ethereal charges
+        if(Input.GetKey(KeyCode.E) && currentEtherealTime > etherealExpirationBuffer)
+        {
+            currentEtherealTime -= etherealDecayRate * Time.deltaTime;
+            etherealActive = true;
+        }
+        else {
+            currentEtherealTime += etherealRechargeFactor * Time.deltaTime;
+            etherealActive = false;
+        }
+        currentEtherealTime = Mathf.Clamp(currentEtherealTime, etherealExpirationBuffer, maxEtherealTime);
+
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            groundSpeed *= 2;
+            groundSpeed *= runFactor;
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            groundSpeed /= 2;
+            groundSpeed /= runFactor;
         }
 
         if (charCtrl.isGrounded)
@@ -57,11 +84,24 @@ public class FPSController : MonoBehaviour
         moveDirection.y = yVel;
 
         charCtrl.Move(moveDirection * Time.deltaTime);
+
+        etherealActiveOrNot.GetComponent<UnityEngine.UI.Text>().text = "Active: " + etherealActive;
+        etherealTimer.GetComponent<UnityEngine.UI.Text>().text = "Ethereal: " + currentEtherealTime;
+
     }
 
     void Jump()
     {
         var initialVelocity = Mathf.Sqrt(2 * gravity * jumpHeight);
         yVel = initialVelocity;
+    }
+
+    public void RespawnPlayer() {
+        Debug.Log(transform.position + " on way to " + spawnPoint.transform.position);
+        charCtrl.enabled = false;
+        transform.position = spawnPoint.transform.position;
+        charCtrl.enabled = true;
+
+        currentEtherealTime = maxEtherealTime;
     }
 }

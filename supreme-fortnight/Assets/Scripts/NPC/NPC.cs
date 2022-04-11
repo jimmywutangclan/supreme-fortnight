@@ -40,7 +40,9 @@ public class NPC : MonoBehaviour
     public float captureDist;
 
     public Vector3 idleDirection;
-    
+
+    public float timeSinceAttacking = 0.0f;
+    public float attackCaptureTime = 0.75f;
 
     // Start is called before the first frame update
     void Start()
@@ -150,6 +152,11 @@ public class NPC : MonoBehaviour
         navMeshAgent.destination = currGoal;
         FaceTarget(currGoal);
 
+        timeSinceAttacking += Time.deltaTime;
+        if (timeSinceAttacking >= attackCaptureTime) {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<FPSController>().RespawnPlayer();
+        }
+
         // if player leaves capture range or no longer in sight, go back to Chase
         if (Vector3.Distance(transform.position, currGoal) > captureDist || !PlayerInFOV()) {
             ExitAttack();
@@ -213,10 +220,12 @@ public class NPC : MonoBehaviour
 
         timeSinceAudioClip = 0;
         source.PlayOneShot(active);
+        timeSinceAttacking = 0.0f;
     }
 
     void ExitAttack() {
         anim.SetBool("Capture", false);
+        timeSinceAttacking = 0.0f;
     }
 
     // We are entering helper function territory here, spaghetti code galore
