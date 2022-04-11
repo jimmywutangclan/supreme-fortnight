@@ -38,7 +38,11 @@ public class NPC : MonoBehaviour
     public float sightAngle;
 
     public float captureDist;
-    
+
+    public Vector3 idleDirection;
+
+    public float timeSinceAttacking = 0.0f;
+    public float attackCaptureTime = 0.75f;
 
     // Start is called before the first frame update
     void Start()
@@ -89,6 +93,7 @@ public class NPC : MonoBehaviour
     }
 
     void OnIdle() {
+        transform.rotation = Quaternion.Euler(idleDirection);
         // if enemy sees player, chase mode activated
         if (PlayerInFOV()) {
             ExitIdle();
@@ -100,9 +105,16 @@ public class NPC : MonoBehaviour
         
         Vector3 currGoal = objectOfTransforms.GetChild(currCheckpoint).position;
         if (Vector3.Distance(transform.position, currGoal) <= stoppingDist) {
-            SetNextPoint();
+            if (checkpointCount == 1) {
+                ExitPatrol();
+                StartIdle();
+            }
+            else {
+                SetNextPoint();
+            }
         }
-        navMeshAgent.destination = objectOfTransforms.GetChild(currCheckpoint).position;
+        navMeshAgent.destination = currGoal;
+        FaceTarget(currGoal);
 
         // if enemy sees player, chase mode activated
         if (PlayerInFOV()) {
@@ -115,6 +127,7 @@ public class NPC : MonoBehaviour
 
         Vector3 currGoal = GameObject.FindGameObjectWithTag("Player").transform.position;
         navMeshAgent.destination = currGoal;
+        FaceTarget(currGoal);
 
         // if player falls out of FOV, go back to patrol/idle duty
         if (!PlayerInFOV()) {
@@ -139,8 +152,13 @@ public class NPC : MonoBehaviour
         navMeshAgent.destination = currGoal;
         FaceTarget(currGoal);
 
-        // if player leaves capture range, go back to Chase
-        if (Vector3.Distance(transform.position, currGoal) > captureDist) {
+        timeSinceAttacking += Time.deltaTime;
+        if (timeSinceAttacking >= attackCaptureTime) {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<FPSController>().RespawnPlayer();
+        }
+
+        // if player leaves capture range or no longer in sight, go back to Chase
+        if (Vector3.Distance(transform.position, currGoal) > captureDist || !PlayerInFOV()) {
             ExitAttack();
             StartChase();
         }
@@ -202,15 +220,20 @@ public class NPC : MonoBehaviour
 
         timeSinceAudioClip = 0;
         source.PlayOneShot(active);
+        timeSinceAttacking = 0.0f;
     }
 
     void ExitAttack() {
         anim.SetBool("Capture", false);
+        timeSinceAttacking = 0.0f;
     }
 
     // We are entering helper function territory here, spaghetti code galore
 
     void SetNextPoint() {
+        if (checkpointCount == 1) {
+            return;
+        }
         if (currCheckpoint == checkpointCount - 1) {
             dir = -1;
         }
