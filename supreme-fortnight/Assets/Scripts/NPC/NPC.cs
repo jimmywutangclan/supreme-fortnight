@@ -27,6 +27,7 @@ public class NPC : MonoBehaviour
     public AudioClip walkSound;
     public AudioClip runSound;
     public AudioClip attackSound;
+    public AudioClip punchSound;
     public float timeSinceAudioClip;
     
     public GameObject model;
@@ -149,18 +150,25 @@ public class NPC : MonoBehaviour
 
     void OnAttack() {
         Vector3 currGoal = GameObject.FindGameObjectWithTag("Player").transform.position;
+        FPSController controller = GameObject.FindGameObjectWithTag("Player").GetComponent<FPSController>();
         navMeshAgent.destination = currGoal;
         FaceTarget(currGoal);
 
         timeSinceAttacking += Time.deltaTime;
         if (timeSinceAttacking >= attackCaptureTime) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<FPSController>().RespawnPlayer();
+            controller.FreezePlayer();
+            controller.ScreenFadeToDie(timeSinceAttacking - attackCaptureTime);
+        }
+        if (timeSinceAttacking >= attackCaptureTime + controller.deathTransitionTime) {
+            controller.RespawnPlayer();
         }
 
         // if player leaves capture range or no longer in sight, go back to Chase
         if (Vector3.Distance(transform.position, currGoal) > captureDist || !PlayerInFOV()) {
             ExitAttack();
             StartChase();
+            controller.UnfreezePlayer();
+            controller.ResetDeathScreen();
         }
     }
 
@@ -220,6 +228,7 @@ public class NPC : MonoBehaviour
 
         timeSinceAudioClip = 0;
         source.PlayOneShot(active);
+        source.PlayOneShot(punchSound);
         timeSinceAttacking = 0.0f;
     }
 

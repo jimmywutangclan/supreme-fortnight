@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ethereal Object
   - Teleportation
+  - Ground
   layers:
   - Default
   - TransparentFX

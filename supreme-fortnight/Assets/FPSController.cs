@@ -29,6 +29,11 @@ public class FPSController : MonoBehaviour
 
     public GameObject etherealTimer;
     public GameObject etherealActiveOrNot;
+    public GameObject deathScreenFade;
+    
+    public float deathTransitionTime = 0.5f;
+    bool freezePlayer;
+    bool etherealActive;
 
     void Start()
     {
@@ -37,53 +42,57 @@ public class FPSController : MonoBehaviour
 
         yAccel = -gravity;
         currentEtherealTime = maxEtherealTime;
+
+        freezePlayer = false;
     }
 
     void Update()
     {
-        input = Input.GetAxis("Horizontal") * transform.right
+        if (!freezePlayer) {
+            input = Input.GetAxis("Horizontal") * transform.right
                 + Input.GetAxis("Vertical") * transform.forward;
 
-        bool etherealActive = true;
-        // managing ethereal charges
-        if(Input.GetKey(KeyCode.E) && currentEtherealTime > etherealExpirationBuffer)
-        {
-            currentEtherealTime -= etherealDecayRate * Time.deltaTime;
             etherealActive = true;
-        }
-        else {
-            currentEtherealTime += etherealRechargeFactor * Time.deltaTime;
-            etherealActive = false;
-        }
-        currentEtherealTime = Mathf.Clamp(currentEtherealTime, etherealExpirationBuffer, maxEtherealTime);
+            // managing ethereal charges
+            if(Input.GetKey(KeyCode.E) && currentEtherealTime > etherealExpirationBuffer)
+            {
+                currentEtherealTime -= etherealDecayRate * Time.deltaTime;
+                etherealActive = true;
+            }
+            else {
+                currentEtherealTime += etherealRechargeFactor * Time.deltaTime;
+                etherealActive = false;
+            }
+            currentEtherealTime = Mathf.Clamp(currentEtherealTime, etherealExpirationBuffer, maxEtherealTime);
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            groundSpeed *= runFactor;
-        }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            groundSpeed /= runFactor;
-        }
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                groundSpeed *= runFactor;
+            }
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                groundSpeed /= runFactor;
+            }
 
-        if (charCtrl.isGrounded)
-        {
-            yVel = 0;
-            if (Input.GetButtonDown("Jump")) Jump();
+            if (charCtrl.isGrounded)
+            {
+                yVel = 0;
+                if (Input.GetButtonDown("Jump")) Jump();
 
-            moveDirection = input * groundSpeed;
-            
+                moveDirection = input * groundSpeed;
+                
+            }
+            else
+            {
+                moveDirection.y = 0;
+                moveDirection = Vector3.Lerp(moveDirection, input * airSpeed, 0.05f);
+            }
+
+            yVel += yAccel * Time.deltaTime;
+            moveDirection.y = yVel;
+
+            charCtrl.Move(moveDirection * Time.deltaTime);
         }
-        else
-        {
-            moveDirection.y = 0;
-            moveDirection = Vector3.Lerp(moveDirection, input * airSpeed, 0.05f);
-        }
-
-        yVel += yAccel * Time.deltaTime;
-        moveDirection.y = yVel;
-
-        charCtrl.Move(moveDirection * Time.deltaTime);
 
         etherealActiveOrNot.GetComponent<UnityEngine.UI.Text>().text = "Active: " + etherealActive;
         etherealTimer.GetComponent<UnityEngine.UI.Text>().text = "Ethereal: " + currentEtherealTime;
@@ -97,11 +106,35 @@ public class FPSController : MonoBehaviour
     }
 
     public void RespawnPlayer() {
-        Debug.Log(transform.position + " on way to " + spawnPoint.transform.position);
         charCtrl.enabled = false;
         transform.position = spawnPoint.transform.position;
         charCtrl.enabled = true;
 
         currentEtherealTime = maxEtherealTime;
+        freezePlayer = false;
+    }
+
+    public void FreezePlayer() {
+        freezePlayer = true;
+    }
+
+    public void UnfreezePlayer() {
+        freezePlayer = false;
+    }
+
+    public void ScreenFadeToDie(float currentTime) {
+        float transparency = (currentTime / deathTransitionTime);
+        UnityEngine.UI.Image activeImage = deathScreenFade.GetComponent<UnityEngine.UI.Image>();
+        activeImage.color = new Color(activeImage.color.r, activeImage.color.g, activeImage.color.b, transparency);
+    }
+
+    public void ScreenGoFullBlack() {
+        UnityEngine.UI.Image activeImage = deathScreenFade.GetComponent<UnityEngine.UI.Image>();
+        activeImage.color = new Color(activeImage.color.r, activeImage.color.g, activeImage.color.b, 1);
+    }
+
+    public void ResetDeathScreen() {
+        UnityEngine.UI.Image activeImage = deathScreenFade.GetComponent<UnityEngine.UI.Image>();
+        activeImage.color = new Color(activeImage.color.r, activeImage.color.g, activeImage.color.b, 0);
     }
 }
