@@ -2232,6 +2232,8 @@ GameObject:
   - component: {fileID: 5840687807385230235}
   - component: {fileID: 973121679}
   - component: {fileID: 587300476}
+  - component: {fileID: 206429460}
+  - component: {fileID: 5643506871766694364}
   m_Layer: 0
   m_Name: rp_nathan_animated_003_walking
   m_TagString: Player
@@ -2289,6 +2291,16 @@ MonoBehaviour:
   groundSpeed: 5
   airSpeed: 5
   jumpHeight: 3
+  runFactor: 1.65
+  etherealRechargeFactor: 0.1
+  etherealDecayRate: 0.3
+  etherealExpirationBuffer: -0.1
+  etherealCooldownTime: 0.5
+  maxEtherealTime: 8
+  currentEtherealTime: 0
+  spawnPoint: {fileID: 0}
+  etherealTimer: {fileID: 0}
+  etherealActiveOrNot: {fileID: 0}
 --- !u!136 &973121679
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2318,6 +2330,35 @@ MonoBehaviour:
   puckPrefab: {fileID: 7452510024908357478, guid: e4d43cab0552cda4e8c9f0208202c21b, type: 3}
   speed: 20
   camera: {fileID: 5840687808580551652}
+--- !u!114 &206429460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6759660375306940440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b3bdbc6308afe641829924af0c9816b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  puckPrefab: {fileID: 5706453552938200803, guid: 20b629f0b09087744b7917586ef01077, type: 3}
+  speed: 20
+  camera: {fileID: 5840687808580551652}
+  distractionCooldown: 10
+  distractionLifespan: 8
+--- !u!114 &5643506871766694364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6759660375306940440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ddca560e7ab0f54fa004a36996cd1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7049827879265124715
 GameObject:
   m_ObjectHideFlags: 0

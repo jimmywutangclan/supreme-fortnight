@@ -11,6 +11,7 @@ public class Teleportation : MonoBehaviour
     GameObject projectile;
     public GameObject camera;
     CharacterController controller;
+    bool teleport = true;
 
     void Start()
     {
@@ -20,9 +21,19 @@ public class Teleportation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)){
+            teleport = true;
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            teleport = false;
+        }
         
         //throw the puck
-        if (Input.GetButtonDown("Fire1") && !(isPuckThrown))
+        if (Input.GetButtonDown("Fire1") && !(isPuckThrown) && teleport)
         {
             projectile = Instantiate(puckPrefab, camera.transform.position + camera.transform.forward, camera.transform.rotation) as GameObject;
             var rb = projectile.GetComponent<Rigidbody>();
@@ -43,7 +54,7 @@ public class Teleportation : MonoBehaviour
         }
 
         //if player right clicks then spawn the puck at their feet
-        else if(Input.GetMouseButtonDown(1) && !(isPuckThrown))
+        else if(Input.GetMouseButtonDown(1) && !(isPuckThrown) && teleport)
         {
             projectile = Instantiate(puckPrefab, transform.position, camera.transform.rotation) as GameObject;
             isPuckThrown = true;

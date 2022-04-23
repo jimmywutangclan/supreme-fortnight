@@ -582,5 +582,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: rp_nathan_animated_003_walking
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5643506871766694364, guid: 2c85e747ae03c1b4aaa00d3c8be9139d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2c85e747ae03c1b4aaa00d3c8be9139d, type: 3}

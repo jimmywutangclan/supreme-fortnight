@@ -125,7 +125,7 @@ Transform:
   m_GameObject: {fileID: 7536674856021400649}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.5, y: 3.97, z: -14.56}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7536674855778905761}
   - {fileID: 254693979880379731}
@@ -220,12 +220,14 @@ MonoBehaviour:
   speed: 1.5
   objectOfTransforms: {fileID: 0}
   stoppingDist: 0.75
-  sightRadius: 10
-  sightAngle: 45
+  sightRadius: 15
+  sightAngle: 90
   captureDist: 2
   idleDirection: {x: 0, y: 0, z: 0}
   timeSinceAttacking: 0
   attackCaptureTime: 0.25
+  distractionPuckDetectionDistance: 5
+  puckPrefab: {fileID: 5706453552938200803, guid: 20b629f0b09087744b7917586ef01077, type: 3}
 --- !u!195 &7536674856021400646
 NavMeshAgent:
   m_ObjectHideFlags: 0
