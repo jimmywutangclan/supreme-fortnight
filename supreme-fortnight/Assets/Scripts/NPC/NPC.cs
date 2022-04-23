@@ -211,7 +211,7 @@ public class NPC : MonoBehaviour
         anim.SetBool("Chase", true);
         active = runSound;
 
-        navMeshAgent.speed = 7.9f;
+        navMeshAgent.speed = 9.5f;
 
         timeSinceAudioClip = 0;
         source.PlayOneShot(active);

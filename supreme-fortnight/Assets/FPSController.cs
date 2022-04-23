@@ -8,7 +8,8 @@ public class FPSController : MonoBehaviour
     CharacterController charCtrl;
   
 
-    [SerializeField] float groundSpeed = 5f;
+    [SerializeField] float groundSpeed;
+    [SerializeField] float baseGroundSpeed = 5f;
     [SerializeField] float airSpeed = 5f;
     [SerializeField] float jumpHeight = 3f;
     [SerializeField] float runFactor = 1.65f;
@@ -44,6 +45,8 @@ public class FPSController : MonoBehaviour
         currentEtherealTime = maxEtherealTime;
 
         freezePlayer = false;
+
+        groundSpeed = baseGroundSpeed;
     }
 
     void Update()
@@ -67,11 +70,11 @@ public class FPSController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                groundSpeed *= runFactor;
+                groundSpeed = runFactor;
             }
             if (Input.GetKeyUp(KeyCode.LeftShift))
             {
-                groundSpeed /= runFactor;
+                groundSpeed = baseGroundSpeed;
             }
 
             if (charCtrl.isGrounded)
