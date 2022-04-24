@@ -7,6 +7,9 @@ public class PuckBehaviour : MonoBehaviour
     // Start is called before the first frame update
     public static bool teleport = true;
     public static bool distraction = false;
+
+    public bool active = false;
+
     void Start()
     {
         
@@ -27,7 +30,7 @@ public class PuckBehaviour : MonoBehaviour
         {
             Rigidbody rb = GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.FreezePosition;
-
+            active = true;
 
         }
     }

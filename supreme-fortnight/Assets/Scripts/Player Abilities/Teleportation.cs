@@ -35,22 +35,25 @@ public class Teleportation : MonoBehaviour
         //throw the puck
         if (Input.GetButtonDown("Fire1") && !(isPuckThrown) && teleport)
         {
-            projectile = Instantiate(puckPrefab, camera.transform.position + camera.transform.forward, camera.transform.rotation) as GameObject;
-            var rb = projectile.GetComponent<Rigidbody>();
-            rb.AddForce(camera.transform.forward * speed, ForceMode.VelocityChange);
-            isPuckThrown = true;
+            RaycastHit hit;
+            if (!Physics.Raycast(transform.position, transform.forward, out hit, 1)) {
+                projectile = Instantiate(puckPrefab, camera.transform.position + camera.transform.forward, camera.transform.rotation) as GameObject;
+                var rb = projectile.GetComponent<Rigidbody>();
+                rb.AddForce(camera.transform.forward * speed, ForceMode.VelocityChange);
+                isPuckThrown = true;
+            }
          
         }
 
         //if the puck is thrown teleport the player to the pucks location and delete puck
-        else if (Input.GetKeyDown(KeyCode.R) && isPuckThrown)
+        else if (Input.GetKeyDown(KeyCode.R) && isPuckThrown && projectile.GetComponent<PuckBehaviour>().active)
         {
             controller.enabled = false;
             transform.position = projectile.transform.position;
             Destroy(projectile);
             isPuckThrown = false;
             controller.enabled = true;
-
+            projectile.GetComponent<PuckBehaviour>().active = false;
         }
 
         //if player right clicks then spawn the puck at their feet
