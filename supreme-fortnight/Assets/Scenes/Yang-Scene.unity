@@ -17416,29 +17416,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7536674856021400640, guid: c0d15bc815fa4c44aa1cf3eb7d27f9c4, type: 3}
-      propertyPath: rolloffMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7536674856021400640, guid: c0d15bc815fa4c44aa1cf3eb7d27f9c4, type: 3}
-      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7536674856021400643, guid: c0d15bc815fa4c44aa1cf3eb7d27f9c4, type: 3}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7536674856021400643, guid: c0d15bc815fa4c44aa1cf3eb7d27f9c4, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7536674856021400643, guid: c0d15bc815fa4c44aa1cf3eb7d27f9c4, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7536674856021400643, guid: c0d15bc815fa4c44aa1cf3eb7d27f9c4, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7536674856021400643, guid: c0d15bc815fa4c44aa1cf3eb7d27f9c4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -17479,14 +17459,6 @@ PrefabInstance:
     - target: {fileID: 7536674856021400643, guid: c0d15bc815fa4c44aa1cf3eb7d27f9c4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7536674856021400647, guid: c0d15bc815fa4c44aa1cf3eb7d27f9c4, type: 3}
-      propertyPath: sightAngle
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 7536674856021400647, guid: c0d15bc815fa4c44aa1cf3eb7d27f9c4, type: 3}
-      propertyPath: sightRadius
-      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7536674856021400647, guid: c0d15bc815fa4c44aa1cf3eb7d27f9c4, type: 3}
       propertyPath: objectOfTransforms

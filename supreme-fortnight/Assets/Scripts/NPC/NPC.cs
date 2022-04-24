@@ -9,6 +9,7 @@ public enum EnemyState {
     Chase,
     Attack,
     Death
+   // ChasePuck
 }
 
 public class NPC : MonoBehaviour
@@ -45,6 +46,12 @@ public class NPC : MonoBehaviour
     public float timeSinceAttacking = 0.0f;
     public float attackCaptureTime = 0.75f;
 
+
+    //Hectors additional fields
+    public int distractionPuckDetectionDistance = 5;
+    public GameObject puckPrefab;
+    float distanceToPuck;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -67,6 +74,10 @@ public class NPC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+    
+      // distanceToPuck = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Distraction").transform.position);
+       
+
         timeSinceAudioClip += Time.deltaTime;
         if (timeSinceAudioClip > active.length) {
             source.PlayOneShot(active);
@@ -90,6 +101,10 @@ public class NPC : MonoBehaviour
             case EnemyState.Death:
                 OnDie();
                 break;
+
+          //  case EnemyState.ChasePuck:
+            //    OnChasePuck();
+              //  break;
         }
     }
 
@@ -100,6 +115,16 @@ public class NPC : MonoBehaviour
             ExitIdle();
             StartChase();
         }
+
+        //if the distraction puck is in the robots range then chase the puck
+    //   else if (distanceToPuck <= distractionPuckDetectionDistance )
+       // {
+      //      ExitIdle();
+        //    StartChasePuck();
+
+        //}
+
+
     }
 
     void OnPatrol() {
@@ -117,12 +142,61 @@ public class NPC : MonoBehaviour
         navMeshAgent.destination = currGoal;
         FaceTarget(currGoal);
 
+      
         // if enemy sees player, chase mode activated
         if (PlayerInFOV()) {
             ExitPatrol();
             StartChase();
         }
+
+        //if the distraction puck is in the robots range then chase the puck
+    //   else if (distanceToPuck <= distractionPuckDetectionDistance && GameObject.FindGameObjectWithTag("Distraction") != null)
+     //   {
+      //      ExitPatrol();
+       //     StartChasePuck();
+
+//        }
+
+
     }
+
+    //changes the robots state to chasing the puck
+   // void StartChasePuck()
+   // {
+     //   status = EnemyState.ChasePuck;
+       // anim.SetBool("Chase", true);
+      //  active = runSound;
+
+      //  navMeshAgent.speed = 7.9f;
+
+      //  timeSinceAudioClip = 0;
+      //  source.PlayOneShot(active);
+
+   // }
+
+    //sets the robots target to the puck and chases the puck instead
+    void OnChasePuck()
+    {
+        Vector3 currGoal = GameObject.FindGameObjectWithTag("Distraction").transform.position;
+        navMeshAgent.destination = currGoal;
+        FaceTarget(currGoal);
+
+        // if the distraction puck no longer exists go back to patrol
+        if (GameObject.FindGameObjectWithTag("Distraction") == null || distanceToPuck > distractionPuckDetectionDistance)
+        {
+            ExitChase();
+            if (checkpointCount == 0)
+            {
+                StartIdle();
+            }
+            else
+            {
+                StartPatrol();
+            }
+        }
+
+    }
+
 
     void OnChase() {
 

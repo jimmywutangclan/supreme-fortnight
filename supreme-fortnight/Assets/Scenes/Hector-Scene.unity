@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &705507994
 Light:
   m_ObjectHideFlags: 0
@@ -446,7 +446,7 @@ GameObject:
   - component: {fileID: 1480417872}
   m_Layer: 0
   m_Name: platform
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -534,6 +534,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 206429460, guid: 2c85e747ae03c1b4aaa00d3c8be9139d, type: 3}
+      propertyPath: puckPrefab
+      value: 
+      objectReference: {fileID: 9155300869065342334, guid: 8b07ba714b824964daba42f96b1b18bc, type: 3}
+    - target: {fileID: 587300476, guid: 2c85e747ae03c1b4aaa00d3c8be9139d, type: 3}
+      propertyPath: puckPrefab
+      value: 
+      objectReference: {fileID: 8578423747409513064, guid: 5d57621f43f675e46ac97280b9aa181a, type: 3}
     - target: {fileID: 6234375929913961122, guid: 2c85e747ae03c1b4aaa00d3c8be9139d, type: 3}
       propertyPath: m_RootOrder
       value: 0

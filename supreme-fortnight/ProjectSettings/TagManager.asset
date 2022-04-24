@@ -5,17 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ethereal Object
-  - Teleportation
-<<<<<<< Updated upstream
-  - Ground
-=======
   - Distraction
->>>>>>> Stashed changes
+  - Teleportation
+  - Ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Entities
+  - 
   - Water
   - UI
   - 
