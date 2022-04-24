@@ -215,6 +215,7 @@ MonoBehaviour:
   walkSound: {fileID: 8300000, guid: 78746b03d88cd504ca19e96f702e8d1c, type: 3}
   runSound: {fileID: 8300000, guid: 474d60babc4100247b3267fdb42584fd, type: 3}
   attackSound: {fileID: 8300000, guid: 8f4e27c1e2035044bb5e63bfaed8aae0, type: 3}
+  punchSound: {fileID: 8300000, guid: e682aaca19353774cb4265ef106c711b, type: 3}
   timeSinceAudioClip: 0
   model: {fileID: 7536674855779201667}
   speed: 1.5
@@ -227,7 +228,7 @@ MonoBehaviour:
   timeSinceAttacking: 0
   attackCaptureTime: 0.25
   distractionPuckDetectionDistance: 5
-  puckPrefab: {fileID: 5706453552938200803, guid: 20b629f0b09087744b7917586ef01077, type: 3}
+  puckPrefab: {fileID: 9155300869065342334, guid: 8b07ba714b824964daba42f96b1b18bc, type: 3}
 --- !u!195 &7536674856021400646
 NavMeshAgent:
   m_ObjectHideFlags: 0

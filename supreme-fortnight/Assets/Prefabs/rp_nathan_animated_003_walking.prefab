@@ -2234,6 +2234,7 @@ GameObject:
   - component: {fileID: 587300476}
   - component: {fileID: 206429460}
   - component: {fileID: 5643506871766694364}
+  - component: {fileID: 1027435277062010556}
   m_Layer: 0
   m_Name: rp_nathan_animated_003_walking
   m_TagString: Player
@@ -2289,18 +2290,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundSpeed: 5
+  baseGroundSpeed: 5
   airSpeed: 5
-  jumpHeight: 3
+  jumpHeight: 2.2
   runFactor: 1.65
   etherealRechargeFactor: 0.1
-  etherealDecayRate: 0.3
+  etherealDecayRate: 0.7
   etherealExpirationBuffer: -0.1
-  etherealCooldownTime: 0.5
-  maxEtherealTime: 8
+  etherealCooldownTime: 0.15
+  maxEtherealTime: 4.5
   currentEtherealTime: 0
   spawnPoint: {fileID: 0}
   etherealTimer: {fileID: 0}
   etherealActiveOrNot: {fileID: 0}
+  deathScreenFade: {fileID: 0}
+  deathTransitionTime: 1.5
 --- !u!136 &973121679
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2327,7 +2331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 061a2047924320943831e543ba421aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puckPrefab: {fileID: 7452510024908357478, guid: e4d43cab0552cda4e8c9f0208202c21b, type: 3}
+  puckPrefab: {fileID: 8578423747409513064, guid: 5d57621f43f675e46ac97280b9aa181a, type: 3}
   speed: 20
   camera: {fileID: 5840687808580551652}
 --- !u!114 &206429460
@@ -2342,7 +2346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b3bdbc6308afe641829924af0c9816b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puckPrefab: {fileID: 5706453552938200803, guid: 20b629f0b09087744b7917586ef01077, type: 3}
+  puckPrefab: {fileID: 9155300869065342334, guid: 8b07ba714b824964daba42f96b1b18bc, type: 3}
   speed: 20
   camera: {fileID: 5840687808580551652}
   distractionCooldown: 10
@@ -2359,6 +2363,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ddca560e7ab0f54fa004a36996cd1a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &1027435277062010556
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6759660375306940440}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2.0332499
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.98291254, z: 0}
 --- !u!1 &7049827879265124715
 GameObject:
   m_ObjectHideFlags: 0

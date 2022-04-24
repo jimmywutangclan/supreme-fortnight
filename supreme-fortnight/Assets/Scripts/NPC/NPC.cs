@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum EnemyState {
+public enum EnemyState
+{
     Idle,
     Patrol,
     Chase,
     Attack,
-    Death
-   // ChasePuck
+    Death,
+    ChasePuck
 }
 
 public class NPC : MonoBehaviour
@@ -30,7 +31,7 @@ public class NPC : MonoBehaviour
     public AudioClip attackSound;
     public AudioClip punchSound;
     public float timeSinceAudioClip;
-    
+
     public GameObject model;
     public float speed = 1.5f;
     public Transform objectOfTransforms;
@@ -62,10 +63,12 @@ public class NPC : MonoBehaviour
         anim = model.GetComponent<Animator>();
 
         // init the patrol state
-        if (checkpointCount == 1) {
+        if (checkpointCount == 1)
+        {
             StartIdle();
         }
-        else {
+        else
+        {
             StartPatrol();
         }
         dir = 1;
@@ -74,12 +77,15 @@ public class NPC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    
-      // distanceToPuck = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Distraction").transform.position);
-       
+        if (GameObject.FindGameObjectWithTag("Distraction") != null)
+        {
+            distanceToPuck = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Distraction").transform.position);
+        }
+
 
         timeSinceAudioClip += Time.deltaTime;
-        if (timeSinceAudioClip > active.length) {
+        if (timeSinceAudioClip > active.length)
+        {
             source.PlayOneShot(active);
             timeSinceAudioClip = 0;
         }
@@ -102,87 +108,124 @@ public class NPC : MonoBehaviour
                 OnDie();
                 break;
 
-          //  case EnemyState.ChasePuck:
-            //    OnChasePuck();
-              //  break;
+            case EnemyState.ChasePuck:
+                OnChasePuck();
+                break;
         }
     }
 
-    void OnIdle() {
+    void OnIdle()
+    {
         transform.rotation = Quaternion.Euler(idleDirection);
         // if enemy sees player, chase mode activated
-        if (PlayerInFOV()) {
+        if (PlayerInFOV())
+        {
             ExitIdle();
             StartChase();
         }
 
         //if the distraction puck is in the robots range then chase the puck
-    //   else if (distanceToPuck <= distractionPuckDetectionDistance )
-       // {
-      //      ExitIdle();
-        //    StartChasePuck();
+        else if (distanceToPuck <= distractionPuckDetectionDistance)
+        {
+            ExitIdle();
+            StartChasePuck();
 
-        //}
+        }
 
 
     }
 
-    void OnPatrol() {
-        
+    void OnPatrol()
+    {
+
         Vector3 currGoal = objectOfTransforms.GetChild(currCheckpoint).position;
-        if (Vector3.Distance(transform.position, currGoal) <= stoppingDist) {
-            if (checkpointCount == 1) {
+        if (Vector3.Distance(transform.position, currGoal) <= stoppingDist)
+        {
+            if (checkpointCount == 1)
+            {
                 ExitPatrol();
                 StartIdle();
             }
-            else {
+            else
+            {
                 SetNextPoint();
             }
         }
         navMeshAgent.destination = currGoal;
         FaceTarget(currGoal);
 
-      
+
         // if enemy sees player, chase mode activated
-        if (PlayerInFOV()) {
+        if (PlayerInFOV())
+        {
             ExitPatrol();
             StartChase();
         }
 
         //if the distraction puck is in the robots range then chase the puck
-    //   else if (distanceToPuck <= distractionPuckDetectionDistance && GameObject.FindGameObjectWithTag("Distraction") != null)
-     //   {
-      //      ExitPatrol();
-       //     StartChasePuck();
+        else if (distanceToPuck <= distractionPuckDetectionDistance && GameObject.FindGameObjectWithTag("Distraction") != null)
+        {
+            ExitPatrol();
+            StartChasePuck();
 
-//        }
+        }
 
 
     }
 
     //changes the robots state to chasing the puck
-   // void StartChasePuck()
-   // {
-     //   status = EnemyState.ChasePuck;
-       // anim.SetBool("Chase", true);
-      //  active = runSound;
+    void StartChasePuck()
+    {
+        status = EnemyState.ChasePuck;
+        anim.SetBool("Chase", true);
+        active = runSound;
 
-      //  navMeshAgent.speed = 7.9f;
+        navMeshAgent.speed = 7.9f;
 
-      //  timeSinceAudioClip = 0;
-      //  source.PlayOneShot(active);
+        timeSinceAudioClip = 0;
+        source.PlayOneShot(active);
 
-   // }
+    }
 
     //sets the robots target to the puck and chases the puck instead
     void OnChasePuck()
     {
-        Vector3 currGoal = GameObject.FindGameObjectWithTag("Distraction").transform.position;
+        if (GameObject.FindGameObjectWithTag("Distraction") != null)
+        {
+            Vector3 currGoal = GameObject.FindGameObjectWithTag("Distraction").transform.position;
+            navMeshAgent.destination = currGoal;
+            FaceTarget(currGoal);
+        }
+
+        else
+        {
+            Debug.Log("puck doesnt exist");
+            ExitChase();
+            if (checkpointCount == 0)
+            {
+                StartIdle();
+            }
+            else
+            {
+                StartPatrol();
+            }
+        }
+
+
+
+
+    }
+
+
+    void OnChase()
+    {
+
+        Vector3 currGoal = GameObject.FindGameObjectWithTag("Player").transform.position;
         navMeshAgent.destination = currGoal;
         FaceTarget(currGoal);
 
-        // if the distraction puck no longer exists go back to patrol
-        if (GameObject.FindGameObjectWithTag("Distraction") == null || distanceToPuck > distractionPuckDetectionDistance)
+        // if player falls out of FOV, go back to patrol/idle duty
+        if (!PlayerInFOV())
         {
             ExitChase();
             if (checkpointCount == 0)
@@ -195,50 +238,35 @@ public class NPC : MonoBehaviour
             }
         }
 
-    }
-
-
-    void OnChase() {
-
-        Vector3 currGoal = GameObject.FindGameObjectWithTag("Player").transform.position;
-        navMeshAgent.destination = currGoal;
-        FaceTarget(currGoal);
-
-        // if player falls out of FOV, go back to patrol/idle duty
-        if (!PlayerInFOV()) {
-            ExitChase();
-            if (checkpointCount == 0) {
-                StartIdle();
-            }
-            else {
-                StartPatrol();
-            }
-        }
-
         // if player gets within the capture range, enter Attack
-        if (Vector3.Distance(transform.position, currGoal) <= captureDist) {
+        if (Vector3.Distance(transform.position, currGoal) <= captureDist)
+        {
             ExitChase();
             StartAttack();
         }
     }
 
-    void OnAttack() {
+    void OnAttack()
+    {
         Vector3 currGoal = GameObject.FindGameObjectWithTag("Player").transform.position;
         FPSController controller = GameObject.FindGameObjectWithTag("Player").GetComponent<FPSController>();
         navMeshAgent.destination = currGoal;
         FaceTarget(currGoal);
 
         timeSinceAttacking += Time.deltaTime;
-        if (timeSinceAttacking >= attackCaptureTime) {
+        if (timeSinceAttacking >= attackCaptureTime)
+        {
             controller.FreezePlayer();
             controller.ScreenFadeToDie(timeSinceAttacking - attackCaptureTime);
         }
-        if (timeSinceAttacking >= attackCaptureTime + controller.deathTransitionTime) {
+        if (timeSinceAttacking >= attackCaptureTime + controller.deathTransitionTime)
+        {
             controller.RespawnPlayer();
         }
 
         // if player leaves capture range or no longer in sight, go back to Chase
-        if (Vector3.Distance(transform.position, currGoal) > captureDist || !PlayerInFOV()) {
+        if (Vector3.Distance(transform.position, currGoal) > captureDist || !PlayerInFOV())
+        {
             ExitAttack();
             StartChase();
             controller.UnfreezePlayer();
@@ -246,13 +274,15 @@ public class NPC : MonoBehaviour
         }
     }
 
-    void OnDie() {
+    void OnDie()
+    {
 
     }
 
     // transition functions here:
 
-    void StartIdle() {
+    void StartIdle()
+    {
         status = EnemyState.Idle;
         anim.SetBool("Idle", true);
         active = idleSound;
@@ -261,11 +291,13 @@ public class NPC : MonoBehaviour
         source.PlayOneShot(active);
     }
 
-    void ExitIdle() {
+    void ExitIdle()
+    {
         anim.SetBool("Idle", false);
     }
 
-    void StartPatrol() {
+    void StartPatrol()
+    {
         status = EnemyState.Patrol;
         anim.SetBool("Patrol", true);
         active = walkSound;
@@ -276,11 +308,13 @@ public class NPC : MonoBehaviour
         source.PlayOneShot(active);
     }
 
-    void ExitPatrol() {
+    void ExitPatrol()
+    {
         anim.SetBool("Patrol", false);
     }
 
-    void StartChase() {
+    void StartChase()
+    {
         status = EnemyState.Chase;
         anim.SetBool("Chase", true);
         active = runSound;
@@ -291,11 +325,13 @@ public class NPC : MonoBehaviour
         source.PlayOneShot(active);
     }
 
-    void ExitChase() {
+    void ExitChase()
+    {
         anim.SetBool("Chase", false);
     }
 
-    void StartAttack() {
+    void StartAttack()
+    {
         status = EnemyState.Attack;
         anim.SetBool("Capture", true);
         active = attackSound;
@@ -306,35 +342,42 @@ public class NPC : MonoBehaviour
         timeSinceAttacking = 0.0f;
     }
 
-    void ExitAttack() {
+    void ExitAttack()
+    {
         anim.SetBool("Capture", false);
         timeSinceAttacking = 0.0f;
     }
 
     // We are entering helper function territory here, spaghetti code galore
 
-    void SetNextPoint() {
-        if (checkpointCount == 1) {
+    void SetNextPoint()
+    {
+        if (checkpointCount == 1)
+        {
             return;
         }
-        if (currCheckpoint == checkpointCount - 1) {
+        if (currCheckpoint == checkpointCount - 1)
+        {
             dir = -1;
         }
-        if (currCheckpoint == 0) {
+        if (currCheckpoint == 0)
+        {
             dir = 1;
         }
         currCheckpoint += dir;
         FaceTarget(objectOfTransforms.GetChild(currCheckpoint).position);
     }
 
-    void FaceTarget(Vector3 target) {
+    void FaceTarget(Vector3 target)
+    {
         Vector3 directionToTarget = target - transform.position;
         directionToTarget.y = 0;
         Quaternion lookRotation = Quaternion.LookRotation(directionToTarget);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 10 * Time.deltaTime);
     }
 
-    bool PlayerInFOV() {
+    bool PlayerInFOV()
+    {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         Vector3 directionToPlayer = player.transform.position - transform.position;
         if (Vector3.Angle(directionToPlayer, transform.forward) <= sightAngle)
