@@ -6,7 +6,7 @@ public class PuckBehaviour : MonoBehaviour
 {
     // Start is called before the first frame update
     public static bool teleport = true;
-    public static bool distraction = false;
+    public bool distraction = false;
 
     public bool active = false;
 
