@@ -1,3 +1,4 @@
+/*
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,7 @@ public enum EnemyState
     ChasePuck
 }
 
-public class NPC : MonoBehaviour
+public class HectorsNPC : MonoBehaviour
 {
     // Everything in this block that's public is for debug/test purposes
     private NavMeshAgent navMeshAgent;
@@ -199,6 +200,7 @@ public class NPC : MonoBehaviour
 
         else
         {
+            Debug.Log("puck doesnt exist");
             ExitChase();
             if (checkpointCount == 0)
             {
@@ -264,7 +266,7 @@ public class NPC : MonoBehaviour
         }
 
         // if player leaves capture range or no longer in sight, go back to Chase
-        if (Vector3.Distance(transform.position, currGoal) > captureDist)
+        if (Vector3.Distance(transform.position, currGoal) > captureDist || !PlayerInFOV())
         {
             ExitAttack();
             StartChase();
@@ -318,7 +320,7 @@ public class NPC : MonoBehaviour
         anim.SetBool("Chase", true);
         active = runSound;
 
-        navMeshAgent.speed = 12.5f;
+        navMeshAgent.speed = 9.5f;
 
         timeSinceAudioClip = 0;
         source.PlayOneShot(active);
@@ -393,3 +395,4 @@ public class NPC : MonoBehaviour
         return false;
     }
 }
+*/
