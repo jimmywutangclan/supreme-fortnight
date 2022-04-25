@@ -31,11 +31,15 @@ public class FPSController : MonoBehaviour
     public GameObject etherealTimer;
     public GameObject etherealActiveOrNot;
     public GameObject deathScreenFade;
+    public GameObject etherealEffect;
     
     public float deathTransitionTime = 0.5f;
-    bool freezePlayer;
+    public bool freezePlayer;
     bool etherealActive;
 
+    public Sprite ETHEREAL_ACTIVE;
+    public Sprite ETHEREAL_INACTIVE;
+    
     void Start()
     {
         charCtrl = GetComponent<CharacterController>();
@@ -97,8 +101,17 @@ public class FPSController : MonoBehaviour
             charCtrl.Move(moveDirection * Time.deltaTime);
         }
 
-        etherealActiveOrNot.GetComponent<UnityEngine.UI.Text>().text = "Active: " + etherealActive;
-        etherealTimer.GetComponent<UnityEngine.UI.Text>().text = "Ethereal: " + currentEtherealTime;
+        if (etherealActive) {
+            UnityEngine.UI.Image activeImage = etherealEffect.GetComponent<UnityEngine.UI.Image>();
+            etherealActiveOrNot.GetComponent<UnityEngine.UI.Image>().sprite = ETHEREAL_ACTIVE;
+            activeImage.color = new Color(activeImage.color.r, activeImage.color.g, activeImage.color.b, 1 - currentEtherealTime / maxEtherealTime);
+        }
+        else {
+            UnityEngine.UI.Image activeImage = etherealEffect.GetComponent<UnityEngine.UI.Image>();
+            etherealActiveOrNot.GetComponent<UnityEngine.UI.Image>().sprite = ETHEREAL_INACTIVE;
+            activeImage.color = new Color(activeImage.color.r, activeImage.color.g, activeImage.color.b, 0);
+        }
+        etherealTimer.GetComponent<UnityEngine.UI.Slider>().value = (currentEtherealTime / maxEtherealTime);
 
     }
 

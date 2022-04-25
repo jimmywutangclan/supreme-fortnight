@@ -32,8 +32,8 @@ public class Teleportation : MonoBehaviour
             teleport = false;
         }
         
-        //throw the puck
-        if (Input.GetButtonDown("Fire1") && !(isPuckThrown) && teleport)
+        //throw the puck if player not frozen
+        if (Input.GetButtonDown("Fire1") && !(isPuckThrown) && teleport && !GameObject.FindGameObjectWithTag("Player").GetComponent<FPSController>().freezePlayer)
         {
             RaycastHit hit;
             if (!Physics.Raycast(transform.position, transform.forward, out hit, 1)) {
