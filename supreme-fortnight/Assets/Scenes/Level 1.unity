@@ -18246,6 +18246,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Out of bounds
       objectReference: {fileID: 0}
+    - target: {fileID: 4169010818294707673, guid: 6f24f1c5d2500154f8c0e6d160e4e23a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4994848521772708963, guid: 6f24f1c5d2500154f8c0e6d160e4e23a, type: 3}
       propertyPath: m_RootOrder
       value: 31
