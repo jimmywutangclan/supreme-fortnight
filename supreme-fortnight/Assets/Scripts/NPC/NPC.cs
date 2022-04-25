@@ -265,7 +265,7 @@ public class NPC : MonoBehaviour
         }
 
         // if player leaves capture range or no longer in sight, go back to Chase
-        if (Vector3.Distance(transform.position, currGoal) > captureDist || !PlayerInFOV())
+        if (Vector3.Distance(transform.position, currGoal) > captureDist)
         {
             ExitAttack();
             StartChase();
@@ -319,7 +319,7 @@ public class NPC : MonoBehaviour
         anim.SetBool("Chase", true);
         active = runSound;
 
-        navMeshAgent.speed = 9.5f;
+        navMeshAgent.speed = 12.5f;
 
         timeSinceAudioClip = 0;
         source.PlayOneShot(active);

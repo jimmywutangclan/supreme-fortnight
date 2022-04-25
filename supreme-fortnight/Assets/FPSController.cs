@@ -13,6 +13,7 @@ public class FPSController : MonoBehaviour
     [SerializeField] float airSpeed = 5f;
     [SerializeField] float jumpHeight = 3f;
     [SerializeField] float runFactor = 1.65f;
+    [SerializeField] float actualRunFactor = 9f;
     [SerializeField] float etherealRechargeFactor = 0.10f;
     [SerializeField] float etherealDecayRate = 0.30f;
     public float etherealExpirationBuffer = -0.1f;
@@ -39,6 +40,11 @@ public class FPSController : MonoBehaviour
 
     public Sprite ETHEREAL_ACTIVE;
     public Sprite ETHEREAL_INACTIVE;
+
+    public int cardsHeld = 0;
+    public int cardsNeeded = 3; 
+
+    public bool running;
     
     void Start()
     {
@@ -51,6 +57,8 @@ public class FPSController : MonoBehaviour
         freezePlayer = false;
 
         groundSpeed = baseGroundSpeed;
+
+        running = false;
     }
 
     void Update()
@@ -75,10 +83,27 @@ public class FPSController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 groundSpeed = runFactor;
+                running = true;
             }
             if (Input.GetKeyUp(KeyCode.LeftShift))
             {
                 groundSpeed = baseGroundSpeed;
+                running = false;
+            }
+
+            // running speed decay
+            if (running) {
+                runFactor -= etherealDecayRate * Time.deltaTime;
+                if (runFactor < baseGroundSpeed) {
+                    runFactor = baseGroundSpeed;
+                }
+                groundSpeed = runFactor;
+            }
+            else {
+                runFactor += etherealDecayRate * Time.deltaTime;
+                if (runFactor > actualRunFactor) {
+                    runFactor = actualRunFactor;
+                }
             }
 
             if (charCtrl.isGrounded)

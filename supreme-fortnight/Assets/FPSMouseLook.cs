@@ -10,6 +10,7 @@ public class FPSMouseLook : MonoBehaviour
     float yaw = 0;
     float pitch = 0;
 
+
     void Awake()
     {
         Cursor.visible = false;
