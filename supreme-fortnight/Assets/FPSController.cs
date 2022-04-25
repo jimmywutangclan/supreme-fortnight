@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 public class FPSController : MonoBehaviour
@@ -177,5 +178,16 @@ public class FPSController : MonoBehaviour
     public void ResetDeathScreen() {
         UnityEngine.UI.Image activeImage = deathScreenFade.GetComponent<UnityEngine.UI.Image>();
         activeImage.color = new Color(activeImage.color.r, activeImage.color.g, activeImage.color.b, 0);
+    }
+
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "LevelExit")
+        {
+            
+            SceneManager.LoadScene(1);
+        }
+
     }
 }

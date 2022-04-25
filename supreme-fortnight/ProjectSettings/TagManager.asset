@@ -12,6 +12,7 @@ TagManager:
   - DistractionUI
   - PlayerHUD
   - Station
+  - LevelExit
   layers:
   - Default
   - TransparentFX
