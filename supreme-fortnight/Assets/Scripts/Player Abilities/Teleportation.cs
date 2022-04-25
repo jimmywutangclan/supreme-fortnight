@@ -16,6 +16,9 @@ public class Teleportation : MonoBehaviour
     GameObject teleportimg;
     GameObject distractimg;
 
+    public AudioSource source;
+    public AudioClip hitSound;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -64,10 +67,12 @@ public class Teleportation : MonoBehaviour
             isPuckThrown = false;
             controller.enabled = true;
             projectile.GetComponent<PuckBehaviour>().active = false;
+            //source.volume = 1;
+            source.PlayOneShot(hitSound);
         }
 
         //if player right clicks then spawn the puck at their feet
-        else if(Input.GetMouseButtonDown(1) && !(isPuckThrown) && teleport)
+        else if(Input.GetMouseButtonDown(1) && !(isPuckThrown) && teleport && !GameObject.FindGameObjectWithTag("Player").GetComponent<FPSController>().freezePlayer)
         {
             projectile = Instantiate(puckPrefab, transform.position, camera.transform.rotation) as GameObject;
             isPuckThrown = true;

@@ -47,6 +47,9 @@ public class FPSController : MonoBehaviour
 
     public bool running;
     
+    public AudioSource source;
+    public AudioClip hitSound;
+
     void Start()
     {
         charCtrl = GetComponent<CharacterController>();
@@ -72,6 +75,8 @@ public class FPSController : MonoBehaviour
             // managing ethereal charges
             if(Input.GetKey(KeyCode.E) && currentEtherealTime > etherealExpirationBuffer)
             {
+                //source.volume = 0.2f;
+                //source.PlayOneShot(hitSound);
                 currentEtherealTime -= etherealDecayRate * Time.deltaTime;
                 etherealActive = true;
             }

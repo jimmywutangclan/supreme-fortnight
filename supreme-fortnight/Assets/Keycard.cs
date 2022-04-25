@@ -8,6 +8,8 @@ public class Keycard : MonoBehaviour
     public GameObject panel;
     public float dist;
 
+    public AudioClip sfx;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +26,7 @@ public class Keycard : MonoBehaviour
             if(Input.GetKey(KeyCode.C))
             {
                 panel.SetActive(false);
+                player.GetComponent<FPSController>().source.PlayOneShot(sfx);
                 player.GetComponent<FPSController>().cardsHeld++;
                 Destroy(this.gameObject);
             }

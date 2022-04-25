@@ -111,3 +111,4 @@ MonoBehaviour:
   player: {fileID: 0}
   panel: {fileID: 0}
   dist: 0
+  sfx: {fileID: 8300000, guid: 27111b5718a7ced4299591d3fa3f4b65, type: 3}

@@ -9,6 +9,8 @@ public class PuckBehaviour : MonoBehaviour
     public bool distraction = false;
 
     public bool active = false;
+    public AudioSource source;
+    public AudioClip hitSound;
 
     void Start()
     {
@@ -32,6 +34,7 @@ public class PuckBehaviour : MonoBehaviour
             rb.constraints = RigidbodyConstraints.FreezePosition;
             active = true;
 
+            source.PlayOneShot(hitSound);
         }
     }
 }
