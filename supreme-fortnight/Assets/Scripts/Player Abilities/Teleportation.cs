@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Teleportation : MonoBehaviour
 {
@@ -12,10 +13,15 @@ public class Teleportation : MonoBehaviour
     public GameObject camera;
     CharacterController controller;
     bool teleport = true;
+    GameObject teleportimg;
+    GameObject distractimg;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        teleportimg = GameObject.FindGameObjectWithTag("TeleportUI");
+        distractimg = GameObject.FindGameObjectWithTag("DistractionUI");
+
     }
 
     // Update is called once per frame
@@ -24,12 +30,16 @@ public class Teleportation : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1)){
             teleport = true;
+            teleportimg.SetActive(true);
+            distractimg.SetActive(false);
 
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             teleport = false;
+            teleportimg.SetActive(false);
+            distractimg.SetActive(true);
         }
         
         //throw the puck if player not frozen

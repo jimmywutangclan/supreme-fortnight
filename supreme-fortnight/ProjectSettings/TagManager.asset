@@ -8,6 +8,9 @@ TagManager:
   - Distraction
   - Teleportation
   - Ground
+  - TeleportUI
+  - DistractionUI
+  - PlayerHUD
   layers:
   - Default
   - TransparentFX
