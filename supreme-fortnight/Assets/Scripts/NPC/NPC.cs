@@ -72,6 +72,7 @@ public class NPC : MonoBehaviour
             StartPatrol();
         }
         dir = 1;
+        navMeshAgent.acceleration = 100;
     }
 
     // Update is called once per frame
@@ -255,11 +256,13 @@ public class NPC : MonoBehaviour
         timeSinceAttacking += Time.deltaTime;
         if (timeSinceAttacking >= attackCaptureTime)
         {
+            navMeshAgent.speed = 0.0f;
             controller.FreezePlayer();
             controller.ScreenFadeToDie(timeSinceAttacking - attackCaptureTime);
         }
         if (timeSinceAttacking >= attackCaptureTime + controller.deathTransitionTime)
         {
+            navMeshAgent.speed = 7.9f;
             controller.RespawnPlayer();
         }
 
